@@ -1,0 +1,118 @@
+# If ZDORDIR is not defined set it to $HOME
+ZDOTDIR="${ZDOTDIR:-$HOME}"
+
+# Install zplug inside of he ZDOTDIR
+ZPLUG_HOME=$ZDOTDIR/.zplug
+
+# Install zplug if it have not been installed
+if [[ ! -d $ZPLUG_HOME ]]; then
+  echo "Installing zplug"
+  git clone https://github.com/zplug/zplug $ZPLUG_HOME
+fi
+
+# Load zplug
+source $ZPLUG_HOME/init.zsh
+
+# Manage zplug itself like other packages
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+# Fix history
+HISTFILE=$ZDOTDIR/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# Edit comment in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# Auto correct mistakes
+setopt correct
+
+# Extended globbing. Allows using regular expressions with *
+setopt extendedglob
+
+# Case insensitive globbing
+setopt nocaseglob
+
+# Array expension with parameters
+setopt rcexpandparam
+
+# Don't warn about running processes when exiting
+setopt nocheckjobs
+
+# Sort filenames numerically when it makes sense
+setopt numericglobsort
+
+# No beep
+setopt nobeep
+
+# Immediately append history instead of overwriting
+setopt appendhistory
+
+# If a new command is a duplicate, remove the older one
+setopt histignorealldups
+
+# if only directory path is entered, cd there.
+setopt autocd
+
+# Autocompletion with an arrow-key driven interface
+zstyle ':completion:*' menu select
+
+# Case insensitive tab completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# automatically find new executables in path
+zstyle ':completion:*' rehash true
+
+# Speed up completions
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path $ZDOTDIR/cache
+
+# Make the world colorful
+alias ls="ls --color=auto"
+alias diff="diff --color=auto"
+alias grep="grep --color=auto"
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
+# Autoenv for zsh
+zplug "Tarrasch/zsh-autoenv"
+
+if [ -x "$(command -v direnv)" ]; then
+  eval "$(direnv hook zsh)"
+fi
+
+# Because your terminal should be able to perform tasks asynchronously without
+# external tools
+zplug 'mafredri/zsh-async'
+
+# Pretty, minimal and fast ZSH prompt
+zplug 'sindresorhus/pure', use:'pure.zsh', as:theme
+
+# Fish shell like syntax highlighting for Zsh
+zplug 'zsh-users/zsh-syntax-highlighting', defer:3
+
+# Fish-like autosuggestions for zsh
+zplug 'zsh-users/zsh-autosuggestions', use:'zsh-autosuggestions.zsh'
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+  zplug install
+fi
+
+# Load all installed plugins
+zplug load

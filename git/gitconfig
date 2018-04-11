@@ -10,3 +10,5 @@
 
 [core]
 	excludesfile = /home/arman/.gitignore_global
+[push]
+	default = simple

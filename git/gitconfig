@@ -1,0 +1,12 @@
+[user]
+	name = Arman Mazdaee
+	email = arman.maz1373@gmail.com
+
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+
+[core]
+	excludesfile = /home/arman/.gitignore_global

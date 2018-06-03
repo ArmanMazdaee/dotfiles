@@ -1,0 +1,222 @@
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Install plugins """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Install vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
+
+" One colorscheme pack to rule them all!
+Plug 'flazz/vim-colorschemes'
+
+" Lean & mean status/tabline for vim that's light as air
+Plug 'vim-airline/vim-airline'
+
+" A collection of themes for vim-airline
+Plug 'vim-airline/vim-airline-themes'
+
+" Surround.vim: quoting/parenthesizing made simple
+Plug 'tpope/vim-surround'
+
+" Comment stuff out 
+Plug 'tpope/vim-commentary'
+
+" Enable repeating supported plugin maps with '.'
+Plug 'tpope/vim-repeat'
+
+" Insert or delete brackets, parens, quotes in pair
+Plug 'jiangmiao/auto-pairs'
+
+" Fuzzy file, buffer, mru, tag, etc finder
+Plug 'ctrlpvim/ctrlp.vim'
+
+" A tree explorer plugin for vim
+Plug 'scrooloose/nerdtree'
+
+" A plugin of NERDTree showing git status
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Asynchronous Lint Engine
+Plug 'w0rp/ale'
+
+" Perform all your vim insert mode completions with Tab
+Plug 'ervandew/supertab'
+
+" define and maintain consistent coding styles between different editors
+if (has('python') || has('python3')) && executable('editorconfig')
+  Plug 'editorconfig/editorconfig-vim'
+endif
+
+" One language pack to rule them all!
+Plug 'sheerun/vim-polyglot'
+
+" Typescript syntax files for Vim
+Plug 'leafgarland/typescript-vim'
+
+" React JSX syntax highlighting for vim and Typescript
+Plug 'peitalin/vim-jsx-typescript'
+
+" A Vim plugin for TypeScript
+Plug 'quramy/tsuquyomi'
+
+" A nicer Python indentation style for vim
+Plug 'Vimjas/vim-python-pep8-indent'
+
+" Using the jedi autocompletion library for VIM.
+if has('python') || has('python3')
+  Plug 'davidhalter/jedi-vim', {'do': 'git submodule update --init'}
+endif
+
+" Change conda environments in the Vim editor (with Jedi-vim support)
+if has('python') || has('python3')
+  " Plug 'cjrh/vim-conda'
+endif
+
+" Initialize plugin system
+call plug#end()
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Basic configs """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Set mapleader key
+let mapleader = " "
+
+" Hides buffers instead of closing them
+set hidden
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" Make vim beautiful again
+set t_Co=256
+set t_ut=
+set background=dark
+colorscheme Tomorrow-Night-Eighties
+if has("gui_running")
+  set guioptions-=T
+  set guifont=Inconsolata\ 17
+endif
+
+" Allow color schemes to do bright colors without forcing bold
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+  set t_Co=16
+endif
+
+" Show relative line numbers
+set relativenumber
+
+" Make wildmenu more vim-sensible
+set wildmode=longest:full,full
+set wildignorecase
+
+" vim completion
+set completeopt=menuone
+
+" No backup, No swap!
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Search
+set hlsearch
+set ignorecase
+set smartcase
+nnoremap <leader><cr> :noh<cr>
+
+" Always show statusline
+set laststatus=2
+
+" Indents
+set expandtab
+set smarttab
+set shiftwidth=2
+set shiftround
+set autoindent
+
+" Load matchit.vim
+runtime! macros/matchit.vim
+
+" Move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" windows related commands is deserve a better key binding
+nnoremap <leader>w <c-w>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins configs """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" vim-airline/vim-airline
+let airline_theme = 'tomorrow'
+
+" ctrlpvim/ctrlp.vim
+if executable('ag')
+  let ctrlp_user_command = 'ag %s -l --nocolor -f -g ""'
+endif
+let ctrlp_cmd = 'CtrlPMixed'
+
+" scrooloose/nerdtree
+nnoremap <leader>n :NERDTreeToggle<cr>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" w0rp/ale
+let ale_lint_delay = 1000
+let g:ale_linters = {
+      \'typescript': ['tslint'],
+      \}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Language specific configs """"""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let polyglot_disabled = []
+
+" TypeScript
+call add(polyglot_disabled, 'typescript')
+" leafgarland/typescript-vim
+let typescript_indent_disable = 1
+" peitalin/vim-jsx-typescript
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
+highlight link jsxCloseString jsxTagName
+" quramy/tsuquyomi
+let tsuquyomi_disable_default_mappings = 1
+let tsuquyomi_disable_quickfix = 1
+if has('localmap')
+  autocmd FileType typescript nnoremap <buffer> <c-]> :TsuDefinition<cr>
+endif
+autocmd FileType typescript let b:SuperTabDefaultCompletionType = '<c-x><c-o>'
+
+" Python
+call add(polyglot_disabled, 'python')
+" davidhalter/jedi-vim
+let jedi#auto_vim_configuration = 0
+let jedi#popup_on_dot = 0
+let jedi#goto_command = ""
+let jedi#goto_assignments_command = "<c-]>"
+let jedi#goto_definitions_command = ""
+let jedi#documentation_command = "K"
+let jedi#usages_command = ""
+let jedi#completions_command = ""
+let jedi#rename_command = ""
+autocmd FileType python let b:SuperTabDefaultCompletionType = '<c-x><c-o>'
+" cjrh/vim-conda
+let conda_startup_msg_suppress = 1

@@ -12,3 +12,5 @@
 	excludesfile = /home/arman/.gitignore_global
 [push]
 	default = simple
+[pull]
+	ff = only

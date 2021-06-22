@@ -8,5 +8,5 @@ $SCRIPTPATH/git/install.sh
 echo "Install zsh"
 $SCRIPTPATH/zsh/install.sh
 
-echo "Install vim"
-$SCRIPTPATH/vim/install.sh
+# echo "Install vim"
+# $SCRIPTPATH/vim/install.sh

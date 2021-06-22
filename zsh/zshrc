@@ -54,7 +54,7 @@ setopt appendhistory
 setopt histignorealldups
 
 # if only directory path is entered, cd there.
-setopt autocd
+# setopt autocd
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
@@ -116,3 +116,10 @@ fi
 
 # Load all installed plugins
 zplug load
+
+# Use neovim as editor
+export EDITOR=nvim
+
+# Set up Node Version Manager
+source /usr/share/nvm/init-nvm.sh
+

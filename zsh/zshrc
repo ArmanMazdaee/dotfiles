@@ -21,6 +21,9 @@ HISTFILE=$ZDOTDIR/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
+# Enable emacs key bindings
+bindkey -e
+
 # Edit comment in editor
 autoload -Uz edit-command-line
 zle -N edit-command-line
@@ -117,9 +120,18 @@ fi
 # Load all installed plugins
 zplug load
 
-# Use neovim as editor
-export EDITOR=nvim
+# Use vim as editor
+export EDITOR=vim
 
 # Set up Node Version Manager
-source /usr/share/nvm/init-nvm.sh
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+
+# Add user home bin folder to the path
+export PATH=~/bin:$PATH
+
+# Add go bin to the path
+export PATH=~/go/bin:$PATH
+
+# Add cargo bin to the path
+export PATH=~/.cargo/bin:$PATH
 

@@ -1,6 +1,6 @@
 [user]
 	name = Arman Mazdaee
-	email = arman.maz1373@gmail.com
+	email = ar.mazdaee@gmail.com
 
 [color]
 	status = auto
@@ -10,7 +10,16 @@
 
 [core]
 	excludesfile = /home/arman/.gitignore_global
+
 [push]
 	default = simple
+
 [pull]
 	ff = only
+
+[url "ssh://git@git.energy/"]
+	insteadOf = https://git.energy/
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+

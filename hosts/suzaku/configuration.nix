@@ -11,7 +11,7 @@
     "flakes"
   ];
   nixpkgs.config.allowUnfree = true;
-  
+
   # Hardware
   hardware.enableRedistributableFirmware = true;
 
@@ -39,15 +39,15 @@
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;  
+  services.desktopManager.gnome.enable = true;
 
   # TODO: Move to the home manager
 
   # System profile packages
   environment.systemPackages = with pkgs; [
-    vim pciutils
+    vim
+    pciutils
   ];
 
   system.stateVersion = "26.05";
 }
-

@@ -24,5 +24,7 @@
     nixosConfigurations = {
       suzaku = import ./hosts/suzaku { inherit inputs; };
     };
+
+    formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
   };
 }

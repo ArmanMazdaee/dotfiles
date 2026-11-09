@@ -26,7 +26,10 @@
             content = {
               type = "luks";
               name = "cryptroot";
-              extraFormatArgs = [ "--type" "luks2" ];
+              extraFormatArgs = [
+                "--type"
+                "luks2"
+              ];
               # Interactive passphrase during initial Disko formatting.
               # Permit periodic SSD TRIM through encryption; this leaks some
               # information about allocated blocks, not plaintext contents.
@@ -61,19 +64,31 @@
             subvolumes = {
               "/@root" = {
                 mountpoint = "/";
-                mountOptions = [ "compress=zstd:1" "noatime" ];
+                mountOptions = [
+                  "compress=zstd:1"
+                  "noatime"
+                ];
               };
               "/@home" = {
                 mountpoint = "/home";
-                mountOptions = [ "compress=zstd:1" "noatime" ];
+                mountOptions = [
+                  "compress=zstd:1"
+                  "noatime"
+                ];
               };
               "/@nix" = {
                 mountpoint = "/nix";
-                mountOptions = [ "compress=zstd:1" "noatime" ];
+                mountOptions = [
+                  "compress=zstd:1"
+                  "noatime"
+                ];
               };
               "/@log" = {
                 mountpoint = "/var/log";
-                mountOptions = [ "compress=zstd:1" "noatime" ];
+                mountOptions = [
+                  "compress=zstd:1"
+                  "noatime"
+                ];
               };
             };
           };

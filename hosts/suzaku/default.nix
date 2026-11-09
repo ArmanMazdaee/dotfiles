@@ -1,7 +1,12 @@
 { inputs }:
 
 let
-  inherit (inputs) nixpkgs home-manager disko nixos-hardware;
+  inherit (inputs)
+    nixpkgs
+    home-manager
+    disko
+    nixos-hardware
+    ;
 in
 nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
@@ -44,11 +49,14 @@ nixpkgs.lib.nixosSystem {
         users.arman = {
           isNormalUser = true;
           group = "arman";
-          extraGroups = [ "wheel" "networkmanager" ];
+          extraGroups = [
+            "wheel"
+            "networkmanager"
+          ];
         };
 
         # Groups
-        groups.arman = {};
+        groups.arman = { };
       };
     }
   ];

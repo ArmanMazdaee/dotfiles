@@ -28,6 +28,7 @@ nixpkgs.lib.nixosSystem {
 
     # Local modules
     ../../modules/nixos/zsh.nix
+    ../../modules/nixos/kanata.nix
 
     # Home Manager
     {

@@ -1,0 +1,239 @@
+;; homerow.kbd
+;;
+;; Caps Lock <-> Escape is always enabled.
+;;
+;; Home-row mods can be explicitly enabled/disabled:
+;;   F8 -> enable home-row mods
+;;   F9 -> disable home-row mods
+;;
+;; When disabled, a/s/d/f/j/k/l/; are plain keys, so Kanata has no
+;; tap-hold delay for them.
+;;
+;; Home-row modifier assignments:
+;;
+;;   Left hand:
+;;     a -> Super
+;;     s -> Alt
+;;     d -> Control
+;;     f -> Shift
+;;
+;;   Right hand:
+;;     j -> Shift
+;;     k -> Control
+;;     l -> Alt
+;;     ; -> Super
+;;
+;; Home-row modifier behavior:
+;;
+;;   - Pressing an ordinary key on the same hand resolves the pending
+;;     home-row modifier as a tap.
+;;
+;;   - Pressing another home-row modifier on the same hand keeps both
+;;     keys pending until one is released. This allows modifier stacking.
+;;
+;; Examples:
+;;
+;;   hold d, press j
+;;     -> C-j
+;;
+;;   hold s, hold d, press j
+;;     -> M-C-j
+;;
+;;   type d, then f normally
+;;     -> df
+;;
+;; Hand assumptions:
+;;
+;;   Left hand:
+;;     ` 1 2 3 4 5
+;;     q w e r t
+;;     a s d f g
+;;     z x c v b
+;;
+;;   Right hand:
+;;     6 7 8 9 0 - =
+;;     y u i o p [ ] \
+;;     h j k l ; '
+;;     n m , . /
+;;
+;; Keys such as Space, Tab, Enter and Backspace are deliberately absent
+;; from the early-tap lists, allowing them to remain modifier targets.
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+)
+
+(defvar
+  tap-time 150
+  hold-time 220
+
+  ;; Non-HRM keys normally typed with the left hand.
+  ;;
+  ;; Pressing one of these while a left-hand HRM is pending resolves
+  ;; that HRM immediately as its tap action.
+  left-hand-press
+  (
+    grv
+    1 2 3 4 5
+
+    q w e r t
+    g
+
+    z x c v b
+  )
+
+  ;; Left-hand home-row modifier keys.
+  ;;
+  ;; These resolve an earlier left-hand HRM as a tap only after being
+  ;; pressed and released. While held, they may stack as modifiers.
+  left-hand-release
+  (
+    a s d f
+  )
+
+  ;; Non-HRM keys normally typed with the right hand.
+  ;;
+  ;; Pressing one of these while a right-hand HRM is pending resolves
+  ;; that HRM immediately as its tap action.
+  right-hand-press
+  (
+    6 7 8 9 0
+    - =
+
+    y u i o p
+    [ ] \
+
+    h
+    '
+
+    n m , . /
+  )
+
+  ;; Right-hand home-row modifier keys.
+  right-hand-release
+  (
+    j k l ;
+  )
+)
+
+(defsrc
+  caps esc
+
+  a s d f
+  j k l ;
+
+  f8 f9
+)
+
+;; Home-row mods OFF.
+;; Caps/Escape swap remains active.
+(deflayer base
+  esc caps
+
+  a s d f
+  j k l ;
+
+  @hrm-on @hrm-off
+)
+
+;; Home-row mods ON.
+;; Caps/Escape swap remains active.
+(deflayer hrm
+  esc caps
+
+  @a @s @d @f
+  @j @k @l @semi
+
+  @hrm-on @hrm-off
+)
+
+(defalias
+  ;; Explicit enable/disable keys.
+  hrm-on  (layer-switch hrm)
+  hrm-off (layer-switch base)
+
+  ;; Left-hand home-row modifiers.
+
+  a
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    a
+    lmet
+    $left-hand-press
+    $left-hand-release
+  )
+
+  s
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    s
+    lalt
+    $left-hand-press
+    $left-hand-release
+  )
+
+  d
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    d
+    lctl
+    $left-hand-press
+    $left-hand-release
+  )
+
+  f
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    f
+    lsft
+    $left-hand-press
+    $left-hand-release
+  )
+
+  ;; Right-hand home-row modifiers.
+
+  j
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    j
+    rsft
+    $right-hand-press
+    $right-hand-release
+  )
+
+  k
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    k
+    rctl
+    $right-hand-press
+    $right-hand-release
+  )
+
+  l
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    l
+    ralt
+    $right-hand-press
+    $right-hand-release
+  )
+
+  semi
+  (tap-hold-release-tap-keys-release
+    $tap-time
+    $hold-time
+    ;
+    rmet
+    $right-hand-press
+    $right-hand-release
+  )
+)

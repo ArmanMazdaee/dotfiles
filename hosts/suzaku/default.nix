@@ -21,6 +21,9 @@ nixpkgs.lib.nixosSystem {
     ./hardware-configuration.nix
     ./disko.nix
 
+    # Local modules
+    ../../modules/nixos/zsh.nix
+
     # Home Manager
     {
       home-manager = {

@@ -3,6 +3,8 @@
 {
   imports = [
     ../../modules/home/git.nix
+    ../../modules/home/niri.nix
+    ../../modules/home/noctalia.nix
   ];
 
   home.username = "arman";

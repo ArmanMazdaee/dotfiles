@@ -1,0 +1,2 @@
+// Start Noctalia when Niri starts.
+spawn-at-startup "noctalia"

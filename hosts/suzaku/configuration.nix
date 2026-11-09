@@ -13,6 +13,8 @@
     # modules
     ../../modules/nixos/zsh.nix
     ../../modules/nixos/kanata.nix
+    ../../modules/nixos/niri.nix
+    ../../modules/nixos/noctalia.nix
 
     # Home Manager
     inputs.home-manager.nixosModules.home-manager

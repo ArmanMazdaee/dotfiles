@@ -1,2 +1,85 @@
 // Start Noctalia when Niri starts.
 spawn-at-startup "noctalia"
+
+// Touchpad
+input {
+    touchpad {
+        tap
+        natural-scroll
+    }
+}
+
+// Window layout
+layout {
+    gaps 10
+
+    default-column-width {
+        proportion 0.5
+    }
+
+    focus-ring {
+        width 2
+        active-color "#89b4fa"
+    }
+}
+
+// Let Noctalia's settings window float.
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+}
+
+binds {
+    // Applications
+    Mod+Return { spawn "ghostty"; }
+    Mod+Space { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+S { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Mod+Comma { spawn "noctalia" "msg" "settings-toggle"; }
+
+    // Window focus
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+
+    // Move columns
+    Mod+Ctrl+H { move-column-left; }
+    Mod+Ctrl+L { move-column-right; }
+
+    // Workspaces
+    Mod+U { focus-workspace-down; }
+    Mod+I { focus-workspace-up; }
+
+    Mod+Ctrl+U { move-column-to-workspace-down; }
+    Mod+Ctrl+I { move-column-to-workspace-up; }
+
+    // Window sizing
+    Mod+R { switch-preset-column-width; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+
+    // Other window actions
+    Mod+V { toggle-window-floating; }
+    Mod+Q { close-window; }
+
+    // Niri overview
+    Mod+O { toggle-overview; }
+
+    // Screenshots
+    Print { screenshot; }
+
+    // Lock screen
+    Mod+Shift+L { spawn "noctalia" "msg" "session" "lock"; }
+
+    // Help and exit
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+Shift+E { quit; }
+
+    // Laptop controls
+    XF86AudioRaiseVolume { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMute { spawn "noctalia" "msg" "volume-mute"; }
+
+    XF86MonBrightnessUp { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown { spawn "noctalia" "msg" "brightness-down"; }
+}

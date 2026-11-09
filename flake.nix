@@ -20,11 +20,17 @@
     };
   };
 
-  outputs = inputs: {
-    nixosConfigurations = {
-      suzaku = import ./hosts/suzaku { inherit inputs; };
-    };
+  outputs =
+    inputs@{ nixpkgs, ... }:
+    {
+      nixosConfigurations = {
+        suzaku = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [ ./hosts/suzaku/configuration.nix ];
+        };
+      };
 
-    formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
-  };
+      formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+    };
 }

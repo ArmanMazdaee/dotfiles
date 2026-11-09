@@ -4,6 +4,7 @@
   imports = [
     ../../modules/home/git.nix
   ];
+
   home.username = "arman";
   home.homeDirectory = "/home/arman";
 
